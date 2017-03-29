@@ -23,6 +23,8 @@ using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace concurrency;
+using namespace std;
+using namespace std::placeholders;
 
 DirectXPage::DirectXPage():
 	m_windowVisible(true),
@@ -56,6 +58,7 @@ DirectXPage::DirectXPage():
 	// At this point we have access to the device. 
 	// We can create the device-dependent resources.
 	m_deviceResources = std::make_shared<DX::DeviceResources>();
+	m_connector = std::make_unique<HolographicRemoteConnection>(m_deviceResources);
 	m_deviceResources->SetSwapChainPanel(swapChainPanel);
 
 	// Register our SwapChainPanel to get independent input pointer events
@@ -193,4 +196,56 @@ void DirectXPage::OnSwapChainPanelSizeChanged(Object^ sender, SizeChangedEventAr
 	critical_section::scoped_lock lock(m_main->GetCriticalSection());
 	m_deviceResources->SetLogicalSize(e->NewSize);
 	m_main->CreateWindowSizeDependentResources();
+}
+
+#include <Ws2tcpip.h>
+
+bool validateIpAddress(const wchar_t& ipAddress)
+{
+	struct sockaddr_in sa;
+	int result = InetPton(AF_INET, &ipAddress, &(sa.sin_addr));
+	return result != 0;
+}
+
+void DirectXPage::TextBox_TextChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::TextChangedEventArgs^ e)
+{
+	if (IPAddressText->Text->Length() <= 0 || !validateIpAddress(*IPAddressText->Text->Data()))
+	{
+		ConnectButton->IsEnabled = false;
+		return;
+	}
+
+	ConnectButton->IsEnabled = true;
+}
+
+void DirectXPage::OnConnected()
+{
+	StatusText->Text = "Connected";
+	ProgressControl->IsActive = false;
+}
+
+void DirectXPage::OnDisconnected(HolographicStreamerConnectionFailureReason reason)
+{
+	StatusText->Text = "";
+	ProgressControl->IsActive = false;
+}
+
+void DirectXPage::OnPreviewFrame(const ComPtr<ID3D11Texture2D>& texture)
+{
+
+}
+
+void DirectXPage::Connect_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	ProgressControl->IsActive = true;
+	m_connector->Connect(IPAddressText->Text,
+		[this]() { this->OnConnected(); },
+		[this](HolographicStreamerConnectionFailureReason reason) { this->OnDisconnected(reason); },
+		[this](const ComPtr<ID3D11Texture2D>& texture) { this->OnPreviewFrame(texture); });
+
+		// This doesn't compile - not sure why as it did with VS2015 - should find out why but lambda's
+		// above seem cleaner anyway.
+		//bind(&DirectXPage::OnConnected, this),
+		//bind(&DirectXPage::OnDisconnected, this, _1),
+		//bind(&DirectXPage::OnPreviewFrame, this, _1));
 }

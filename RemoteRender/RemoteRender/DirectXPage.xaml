@@ -8,11 +8,31 @@
     mc:Ignorable="d">
 
   <SwapChainPanel x:Name="swapChainPanel">
-    <TextBlock Text="Hello from XAML!"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Top"
-               FontSize="30" />
-  </SwapChainPanel>
+        <Grid VerticalAlignment="Top" Margin="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Text="IP Address"
+                       Foreground="White"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Top"
+                       FontSize="30" Margin="12"/>
+            <TextBox Grid.Column="1" Margin="12" TextChanged="TextBox_TextChanged"
+                     x:Name="IPAddressText"></TextBox>
+            <Button Content="Connect" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" 
+                    FontSize="30" Foreground="White" Click="Connect_Click" x:Name="ConnectButton"
+                    IsEnabled="False"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                <ProgressRing IsActive="False" x:Name="ProgressControl"></ProgressRing>
+                <TextBlock x:Name="StatusText"></TextBlock>
+            </StackPanel>
+        </Grid>
+    </SwapChainPanel>
 
   <Page.BottomAppBar>
     <AppBar x:Name="bottomAppBar" Padding="10,0,10,0">

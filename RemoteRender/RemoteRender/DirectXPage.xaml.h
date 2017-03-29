@@ -9,6 +9,7 @@
 
 #include "Common\DeviceResources.h"
 #include "RemoteRenderMain.h"
+#include "HolographicRemoteConnection.h"
 
 namespace RemoteRender
 {
@@ -25,6 +26,10 @@ namespace RemoteRender
 		void LoadInternalState(Windows::Foundation::Collections::IPropertySet^ state);
 
 	private:
+		void OnConnected();
+		void OnDisconnected(HolographicStreamerConnectionFailureReason reason);
+		void OnPreviewFrame(const ComPtr<ID3D11Texture2D>& texture);
+
 		// XAML low-level rendering event handler.
 		void OnRendering(Platform::Object^ sender, Platform::Object^ args);
 
@@ -54,6 +59,10 @@ namespace RemoteRender
 		std::shared_ptr<DX::DeviceResources> m_deviceResources;
 		std::unique_ptr<RemoteRenderMain> m_main; 
 		bool m_windowVisible;
+
+		std::unique_ptr<HolographicRemoteConnection> m_connector;
+		void TextBox_TextChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::TextChangedEventArgs^ e);
+		void Connect_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }
 

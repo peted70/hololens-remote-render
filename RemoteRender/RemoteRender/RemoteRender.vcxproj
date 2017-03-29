@@ -201,6 +201,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="Common\DeviceResources.h" />
+    <ClInclude Include="DebugLog.h" />
     <ClInclude Include="HolographicRemoteConnection.h" />
     <ClInclude Include="RemoteRenderMain.h" />
     <ClInclude Include="DirectXPage.xaml.h">
