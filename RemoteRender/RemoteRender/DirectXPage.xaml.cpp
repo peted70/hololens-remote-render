@@ -220,14 +220,24 @@ void DirectXPage::TextBox_TextChanged(Platform::Object^ sender, Windows::UI::Xam
 
 void DirectXPage::OnConnected()
 {
-	StatusText->Text = "Connected";
-	ProgressControl->IsActive = false;
+	this->Dispatcher->RunAsync(
+		Windows::UI::Core::CoreDispatcherPriority::Normal,
+		ref new Windows::UI::Core::DispatchedHandler([this]()
+	{
+		StatusText->Text = "Connected";
+		ProgressControl->IsActive = false;
+	}));
 }
 
 void DirectXPage::OnDisconnected(HolographicStreamerConnectionFailureReason reason)
 {
-	StatusText->Text = "";
-	ProgressControl->IsActive = false;
+	this->Dispatcher->RunAsync(
+		Windows::UI::Core::CoreDispatcherPriority::Normal,
+		ref new Windows::UI::Core::DispatchedHandler([this]()
+		{
+			StatusText->Text = "";
+			ProgressControl->IsActive = false;
+		}));
 }
 
 void DirectXPage::OnPreviewFrame(const ComPtr<ID3D11Texture2D>& texture)
