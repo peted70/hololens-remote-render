@@ -33,6 +33,12 @@ void HolographicRemoteConnection::Connect(String^ ipAddress,
 	}
 }
 
+void HolographicRemoteConnection::Disconnect()
+{
+	m_streamerHelpers->Disconnect();
+	DebugLog(L"Disconnected");
+}
+
 void HolographicRemoteConnection::ConnectHandlers(String^ ipAddress,
 	HolographicStreamerHelpers^ helper,
 	function<void()> OnConnected, function<void(HolographicStreamerConnectionFailureReason)> OnDisconnected, 

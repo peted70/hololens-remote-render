@@ -226,6 +226,7 @@ void DirectXPage::OnConnected()
 	{
 		StatusText->Text = "Connected";
 		ProgressControl->IsActive = false;
+		DisconnectButton->Visibility = Windows::UI::Xaml::Visibility::Visible;
 	}));
 }
 
@@ -237,7 +238,8 @@ void DirectXPage::OnDisconnected(HolographicStreamerConnectionFailureReason reas
 		{
 			StatusText->Text = "";
 			ProgressControl->IsActive = false;
-		}));
+			DisconnectButton->Visibility = Windows::UI::Xaml::Visibility::Collapsed;
+	}));
 }
 
 void DirectXPage::OnPreviewFrame(const ComPtr<ID3D11Texture2D>& texture)
@@ -270,4 +272,11 @@ void DirectXPage::Connect_Click(Platform::Object^ sender, Windows::UI::Xaml::Rou
 		[this]() { this->OnConnected(); },
 		[this](HolographicStreamerConnectionFailureReason reason) { this->OnDisconnected(reason); },
 		[this](const ComPtr<ID3D11Texture2D>& texture) { this->OnPreviewFrame(texture); });
+}
+
+void RemoteRender::DirectXPage::Disconnect_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	StatusText->Text = "Disconnecting...";
+	ProgressControl->IsActive = true;
+	m_connector->Disconnect();
 }

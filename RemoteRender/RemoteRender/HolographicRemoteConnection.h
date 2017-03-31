@@ -21,6 +21,8 @@ public:
 		function<void(HolographicStreamerConnectionFailureReason)> OnDisconnected,
 		function<void(const ComPtr<ID3D11Texture2D>&)> OnPreviewFrame);
 
+	void Disconnect();
+
 private:
 	void ConnectHandlers(String^ ipAddress,
 		HolographicStreamerHelpers ^ helper,

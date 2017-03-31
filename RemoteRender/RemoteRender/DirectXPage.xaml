@@ -29,6 +29,7 @@
                     IsEnabled="False"/>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
                 <ProgressRing IsActive="False" x:Name="ProgressControl"></ProgressRing>
+                <Button Content="Disconnect" Visibility="Collapsed" Click="Disconnect_Click" x:Name="DisconnectButton"/>
                 <TextBlock x:Name="StatusText"></TextBlock>
             </StackPanel>
         </Grid>
