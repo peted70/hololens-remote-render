@@ -84,13 +84,13 @@ DirectXPage::DirectXPage():
 	m_inputLoopWorker = ThreadPool::RunAsync(workItemHandler, WorkItemPriority::High, WorkItemOptions::TimeSliced);
 
 	m_main = std::unique_ptr<RemoteRenderMain>(new RemoteRenderMain(m_deviceResources));
-	m_main->StartRenderLoop();
+	//m_main->StartRenderLoop();
 }
 
 DirectXPage::~DirectXPage()
 {
 	// Stop rendering and processing events on destruction.
-	m_main->StopRenderLoop();
+	//m_main->StopRenderLoop();
 	m_coreInput->Dispatcher->StopProcessEvents();
 }
 
@@ -112,7 +112,7 @@ void DirectXPage::LoadInternalState(IPropertySet^ state)
 	// Put code to load app state here.
 
 	// Start rendering when the app is resumed.
-	m_main->StartRenderLoop();
+	//m_main->StartRenderLoop();
 }
 
 // Window event handlers.
@@ -122,11 +122,11 @@ void DirectXPage::OnVisibilityChanged(CoreWindow^ sender, VisibilityChangedEvent
 	m_windowVisible = args->Visible;
 	if (m_windowVisible)
 	{
-		m_main->StartRenderLoop();
+		//m_main->StartRenderLoop();
 	}
 	else
 	{
-		m_main->StopRenderLoop();
+		//m_main->StopRenderLoop();
 	}
 }
 
@@ -166,7 +166,7 @@ void DirectXPage::AppBarButton_Click(Object^ sender, RoutedEventArgs^ e)
 void DirectXPage::OnPointerPressed(Object^ sender, PointerEventArgs^ e)
 {
 	// When the pointer is pressed begin tracking the pointer movement.
-	m_main->StartTracking();
+	//m_main->StartTracking();
 }
 
 void DirectXPage::OnPointerMoved(Object^ sender, PointerEventArgs^ e)
@@ -174,14 +174,14 @@ void DirectXPage::OnPointerMoved(Object^ sender, PointerEventArgs^ e)
 	// Update the pointer tracking code.
 	if (m_main->IsTracking())
 	{
-		m_main->TrackingUpdate(e->CurrentPoint->Position.X);
+		//m_main->TrackingUpdate(e->CurrentPoint->Position.X);
 	}
 }
 
 void DirectXPage::OnPointerReleased(Object^ sender, PointerEventArgs^ e)
 {
 	// Stop tracking pointer movement when the pointer is released.
-	m_main->StopTracking();
+	//m_main->StopTracking();
 }
 
 void DirectXPage::OnCompositionScaleChanged(SwapChainPanel^ sender, Object^ args)
