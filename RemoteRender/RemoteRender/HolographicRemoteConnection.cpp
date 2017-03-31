@@ -16,6 +16,12 @@ void HolographicRemoteConnection::Connect(String^ ipAddress,
 	m_streamerHelpers = ref new HolographicStreamerHelpers();
 	m_streamerHelpers->CreateStreamer(m_deviceResources->GetD3DDevice());
 
+	// Work out a way to structure this...
+	//m_appView->Initialize(m_streamerHelpers->HolographicSpace, m_streamerHelpers->RemoteSpeech);
+	//ComPtr<ID3D11Device4> spDevice = m_appView->GetDeviceResources()->GetD3DDevice();
+	//ComPtr<ID3D11DeviceContext3> spContext = m_appView->GetDeviceResources()->GetD3DDeviceContext();
+	//m_deviceResources->SetD3DDevice(spDevice.Get(), spContext.Get());
+
 	// We currently need to stream at 720p because that's the resolution of our remote display.
 	// There is a check in the holographic streamer that makes sure the remote and local
 	// resolutions match. The default streamer resolution is 1080p.
