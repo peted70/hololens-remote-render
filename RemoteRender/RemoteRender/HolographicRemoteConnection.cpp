@@ -82,25 +82,5 @@ void HolographicRemoteConnection::ConnectHandlers(String^ ipAddress,
 		[this, OnPreviewFrame](_In_ const ComPtr<ID3D11Texture2D>& spTexture, _In_ FrameMetadata metadata)
 	{
 		OnPreviewFrame(spTexture);
-
-		//if (m_showPreview)
-		//{
-		//	ComPtr<ID3D11Device1> spDevice = m_deviceResources->GetD3DDevice();
-		//	ComPtr<ID3D11DeviceContext> spContext = m_deviceResources->GetD3DDeviceContext();
-
-		//	ComPtr<ID3D11Texture2D> spBackBuffer;
-		//	ThrowIfFailed(m_swapChain->GetBuffer(0, IID_PPV_ARGS(&spBackBuffer)));
-
-		//	spContext->CopySubresourceRegion(
-		//		spBackBuffer.Get(), // dest
-		//		0,                  // dest subresource
-		//		0, 0, 0,            // dest x, y, z
-		//		spTexture.Get(),    // source
-		//		0,                  // source subresource
-		//		nullptr);           // source box, null means the entire resource
-
-		//	DXGI_PRESENT_PARAMETERS parameters = { 0 };
-		//	ThrowIfFailed(m_swapChain->Present1(1, 0, &parameters));
-		//}
 	});
 };
